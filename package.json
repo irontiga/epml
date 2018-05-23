@@ -1,0 +1,37 @@
+{
+  "name": "epml",
+  "version": "0.0.1",
+  "description": "Extensible postMessage library",
+  "main": "dist/epml.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rollup -c",
+    "buildDocs": "jsdoc -c conf.json"
+  },
+  "repository": "git+https://github.com/irontiga/epml.git",
+  "author": "irontiga",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/irontiga/epml/issues"
+  },
+  "homepage": "https://github.com/irontiga/epml#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.0.0-alpha.2",
+    "eslint-config-standard": "^12.0.0-alpha.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jest": "^21.15.1",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "jest": "^22.4.3",
+    "jsdoc": "^3.5.5",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-uglify": "^3.0.0"
+  }
+}
