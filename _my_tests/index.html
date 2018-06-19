@@ -1,0 +1,23 @@
+<!DOPCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <iframe src="frame1.html" id="frame1"></iframe>
+
+        <script type="module">
+            import Epml from '../src/Epml.js'
+
+            const frameElement = document.getElementById('frame1')
+
+            const frameEpml = new Epml({type: 'WINDOW', source: frameElement})
+
+            // console.log(frameEpml)
+
+            setInterval(() => {
+                frameEpml.request('hi').then(res => console.log("THE TIME IS " + res))
+            }, 2000)
+        </script>
+    </body>
+</html>

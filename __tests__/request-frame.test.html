@@ -6,7 +6,20 @@
     <body>
         <script type="module">
             import Epml from '../src/main.js'
-            const parentEpml = new Epml(window.parent)
+            const parentEpml = new Epml({
+                type: 'WINDOW',
+                source: window.parent
+            })
+            
+            parentEpml.request('name').then(name => {
+                console.log(name)
+            })
+
+            Epml.route('time', async (req) => {
+                return Date.now()
+            })
+
+            setTimeout(testAsync, 1000)
         </script>
     </body>
 </html>

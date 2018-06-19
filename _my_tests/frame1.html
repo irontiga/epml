@@ -1,0 +1,19 @@
+<!DOPCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Frame 1 :D</h1>
+
+        <script type="module">
+            import Epml from '../src/Epml.js'
+
+            const parentEpml = new Epml({type: 'WINDOW', source: window.parent})
+
+            parentEpml.route('hi', async req => {
+                return Date.now()
+            })
+        </script>
+    </body>
+</html>

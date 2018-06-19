@@ -18,6 +18,10 @@ class ContentWindowTarget extends Target {
         return sourceTargetMap.get(source)
     }
 
+    static hasTarget (source) {
+        return sourceTargetMap.has(source)
+    }
+
     static get type () {
         return 'WINDOW'
     }
@@ -32,9 +36,7 @@ class ContentWindowTarget extends Target {
 
     static test (source) {
         if (typeof source !== 'object') return false
-
-        if (source.contentWindow) source = source.contentWindow
-
+        // console.log('FOCUS FNS', source.focus === window.focus)
         return (source === source.window && source.focus === window.focus)
     }
 
@@ -43,7 +45,9 @@ class ContentWindowTarget extends Target {
     }
 
     constructor (source) {
-        super()
+        super(source)
+
+        if (source.contentWindow) source = source.contentWindow
 
         // If the source already has an existing target object, simply return it.
         if (sourceTargetMap.has(source)) return sourceTargetMap.get(source)
@@ -52,6 +56,8 @@ class ContentWindowTarget extends Target {
 
         this._source = source
 
+        this._sourceOrigin = source.origin
+
         sourceTargetMap.set(source, this)
 
         // targetWindows.push(source)
@@ -59,6 +65,11 @@ class ContentWindowTarget extends Target {
 
     get source () {
         return this._source
+    }
+
+    sendMessage (message) {
+        message = Target.prepareOutgoingData(message)
+        this._source.postMessage(message, this._sourceOrigin)
     }
 }
 export default ContentWindowTarget

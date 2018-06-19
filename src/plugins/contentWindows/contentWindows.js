@@ -11,12 +11,15 @@ export default {
 
         bindEvent(window, 'message', event => {
             console.log(event)
-            Epml.handleMessage(event.data, event.source, message => {
-                event.source.postMessage(message, event.origin)
-            })
+            if (!ContentWindowTarget.hasTarget(event.source)) return
+            Epml.handleMessage(event.data, ContentWindowTarget.getTarget(event.source))
+            // Epml.handleMessage(event.data, event.source, message => {
+            //     event.source.postMessage(message, event.origin)
+            // })
         })
 
-        Epml.addTargetConstructor(ContentWindowTarget)
+        // Epml.addTargetConstructor(ContentWindowTarget)
+        Epml.registerTargetType('WINDOW', ContentWindowTarget)
 
         // Epml.addTargetHandler({
         //     targetType: 'WINDOW', // Unique type for each target type
