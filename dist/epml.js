@@ -1,32 +1,54 @@
-'use strict'
-
-import Target from './Target.js'
-
-const messageTypes = {}
-const targetTypes = {}
+'use strict';
 
 /**
- * Epml core. Useless on it's own. Needs plugins in order to "do" anything
- * @module EpmlCore
+ * Base class for a target. Has checks in place to validate Target objects
+ * @module Target
  */
 
-// const epmlRequestTypeHandlers = {}
-// const targetConstructors = []
+class Target {
+    // Need a static getter to check for inheritance...otherwise browser bundles can break
+    static get _isInheritFromTargetBaseClass () {
+        return true
+    }
+    /**
+        * Last step before sending data. Turns it into a string (obj->JSON)
+        * @param {object} data
+        */
+    static prepareOutgoingData (data) {
+        return JSON.stringify(data)
+    }
 
-const allTargets = [] // No duplication
+    constructor (source) {
+        if (!source) throw new Error('Source must be spcified')
+
+        // Not needed, uses type instead
+        // if (!this.constructor.test) throw new Error('Class requires a static `test` method in order to check whether or not a source is compatible with the constructor')
+
+        if (!this.constructor.type) throw new Error(`Type not defined`)
+
+        if (!this.constructor.name) console.warn(`No name provided`);
+
+        if (!this.constructor.description) console.warn('No description provided');
+
+        if (!this.sendMessage) throw new Error('A new target requires a sendMessage method')
+    }
+}
+
+const messageTypes = {};
+const targetTypes = {};
 
 /**
  * Epml core. All plugins build off this
  * @constructor
  */
-export default class EpmlCore {
+class EpmlCore {
     /**
      * Installs a plugin "globally". Every new and existing epml instance will have this plugin enabled
      * @param {object} plugin - Epml plugin
      * @param {object} options - Options config object
      */
     static registerPlugin (plugin, options) {
-        plugin.init(EpmlCore, options)
+        plugin.init(EpmlCore, options);
         return EpmlCore
     }
 
@@ -57,11 +79,11 @@ export default class EpmlCore {
     static registerTargetType (type, targetConstructor) {
         if (type in targetTypes) throw new Error('Target type has already been registered')
         if (!(targetConstructor.prototype instanceof Target)) throw new Error('Target constructors must inherit from the Target base class')
-        targetTypes[type] = targetConstructor
+        targetTypes[type] = targetConstructor;
     }
 
     static registerEpmlMessageType (type, fn) {
-        messageTypes[type] = fn
+        messageTypes[type] = fn;
     }
 
     /**
@@ -69,7 +91,7 @@ export default class EpmlCore {
      * @param {object} plugin - Epml plugin
      */
     registerPlugin (plugin) {
-        plugin.init(this)
+        plugin.init(this);
         return this
     }
 
@@ -79,10 +101,10 @@ export default class EpmlCore {
      * @param {Target} target - Target object from which the message was received
      */
     static handleMessage (strData, target) {
-        const data = EpmlCore.prepareIncomingData(strData)
+        const data = EpmlCore.prepareIncomingData(strData);
 
         if ('EpmlMessageType' in data) {
-            messageTypes[data.EpmlMessageType](data, target)
+            messageTypes[data.EpmlMessageType](data, target);
         }
 
         // Then send a response or whatever back with target.sendMessage(this.constructor.prepareOutgoingData(someData))
@@ -106,13 +128,13 @@ export default class EpmlCore {
      * @returns {Object[]} - An array of target objects
      */
     static createTargets (targetSources) {
-        if (!Array.isArray(targetSources)) targetSources = [targetSources]
+        if (!Array.isArray(targetSources)) targetSources = [targetSources];
 
-        const targets = []
+        const targets = [];
 
         for (const targetSource of targetSources) {
-            if (targetSource.allowObjects === undefined) targetSource.allowObjects = false
-            targets.push(...EpmlCore.createTarget(targetSource))
+            if (targetSource.allowObjects === undefined) targetSource.allowObjects = false;
+            targets.push(...EpmlCore.createTarget(targetSource));
         }
 
         return targets
@@ -138,11 +160,10 @@ export default class EpmlCore {
         if (!targetTypes[targetSource.type]) {
             throw new Error(`Target type '${targetSource.type}' not registered`)
         }
-        let newTargets = new targetTypes[targetSource.type](targetSource.source)
-        if (!Array.isArray(newTargets)) newTargets = [newTargets]
+        let newTargets = new targetTypes[targetSource.type](targetSource.source);
+        if (!Array.isArray(newTargets)) newTargets = [newTargets];
         for (const newTarget of newTargets) {
-            if (allTargets.indexOf(newTarget) === -1) allTargets.push(newTarget)
-            newTarget.allowObjects = targetSource.allowObjects
+            newTarget.allowObjects = targetSource.allowObjects;
         }
         return newTargets
     }
@@ -153,6 +174,8 @@ export default class EpmlCore {
      * @param {Object|Object[]} targets - Target instantiation object or an array of them
      */
     constructor (targets) {
-        this.targets = this.constructor.createTargets(targets)
+        this.targets = this.constructor.createTargets(targets);
     }
 }
+
+module.exports = EpmlCore;

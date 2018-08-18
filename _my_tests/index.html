@@ -9,15 +9,31 @@
         <script type="module">
             import Epml from '../src/Epml.js'
 
-            const frameElement = document.getElementById('frame1')
+            // Install worker plugin, not default...for now
+            import contentWindowPlugin from '../src/plugins/contentWindows/contentWindows.js'
+            Epml.registerPlugin(contentWindowPlugin)
+            
 
-            const frameEpml = new Epml({type: 'WINDOW', source: frameElement})
+            document.addEventListener("DOMContentLoaded", function (event) {
+                const frameElement = document.getElementById('frame1')
 
-            // console.log(frameEpml)
+                const frameEpml = new Epml({ type: 'WINDOW', source: frameElement })
 
-            setInterval(() => {
-                frameEpml.request('hi').then(res => console.log("THE TIME IS " + res))
-            }, 2000)
+                // console.log(frameEpml)
+
+                frameEpml.ready().then(() => {
+                    console.log('Frame ready :)')
+                    setInterval(() => {
+                        frameEpml.request('hi').then(res => console.log(`Time elapsed: ${res} seconds`))
+                    }, 3000)
+                })
+
+                frameEpml.imReady()
+
+            })
+
+            
+            
         </script>
     </body>
 </html>

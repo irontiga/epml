@@ -5,7 +5,7 @@ const sourceTargetMap = new Map()
 /**
  * Can only take ONE iframe or popup as source
  */
-class ContentWindowTarget extends Target {
+class WorkerTarget extends Target {
     static get sources () {
         return Array.from(sourceTargetMap.keys())
     }
@@ -23,21 +23,22 @@ class ContentWindowTarget extends Target {
     }
 
     static get type () {
-        return 'WINDOW'
+        return 'WORKER'
     }
 
     static get name () {
-        return 'Content window plugin'
+        return 'Web/Service worker plugin'
     }
 
     static get description () {
-        return `Allows Epml to communicate with iframes and popup windows.`
+        return `Allows Epml to communicate with web and service workers.`
     }
 
     static test (source) {
         if (typeof source !== 'object') return false
         // console.log('FOCUS FNS', source.focus === window.focus)
-        return (source === source.window && source.focus === window.focus)
+
+        return ((typeof WorkerGlobalScope !== 'undefined' && source instanceof WorkerGlobalScope) || source instanceof Worker)
     }
 
     isFrom (source) {
@@ -47,19 +48,26 @@ class ContentWindowTarget extends Target {
     constructor (source) {
         super(source)
 
-        if (source.contentWindow) source = source.contentWindow
+        // if (source.contentWindow) source = source.contentWindow
 
         // If the source already has an existing target object, simply return it.
         if (sourceTargetMap.has(source)) return sourceTargetMap.get(source)
 
-        if (!this.constructor.test(source)) throw new Error('Source can not be used with target')
+        if (!this.constructor.test(source)) throw new Error(`Source can not be used with target type '${this.constructor.type}'`)
+
+        if (!this.constructor.EpmlReference) throw new Error('No Epml(core) reference')
 
         this._source = source
 
-        this._sourceOrigin = source.origin
+        // sourceTargetMap.set(source, this)
 
-        sourceTargetMap.set(source, this)
-
+        // And listen for messages
+        // console.log(source)
+        source.onmessage = event => {
+            // console.log(event)
+            // console.log(this)
+            this.constructor.EpmlReference.handleMessage(event.data, this)
+        }
         // targetWindows.push(source)
     }
 
@@ -72,4 +80,4 @@ class ContentWindowTarget extends Target {
         this._source.postMessage(message, this._sourceOrigin)
     }
 }
-export default ContentWindowTarget
+export default WorkerTarget

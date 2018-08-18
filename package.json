@@ -9,6 +9,7 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c",
+    "watch": "rollup -c -w",
     "buildDocs": "jsdoc -c conf.json"
   },
   "repository": "git+https://github.com/irontiga/epml.git",

@@ -4,7 +4,9 @@ module.exports = {
         indent: ['error', 4]
     },
     env : {
-        es6: true
+        es6: true,
+        browser: true,
+        worker: true
     },
     overrides: [
         {

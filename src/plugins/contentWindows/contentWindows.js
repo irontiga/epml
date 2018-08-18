@@ -10,16 +10,16 @@ export default {
         // const proto = Epml.prototype
 
         bindEvent(window, 'message', event => {
-            console.log(event)
+            // console.log(event)
             if (!ContentWindowTarget.hasTarget(event.source)) return
-            Epml.handleMessage(event.data, ContentWindowTarget.getTarget(event.source))
+            Epml.handleMessage(event.data, ContentWindowTarget.getTargetFromSource(event.source))
             // Epml.handleMessage(event.data, event.source, message => {
             //     event.source.postMessage(message, event.origin)
             // })
         })
 
         // Epml.addTargetConstructor(ContentWindowTarget)
-        Epml.registerTargetType('WINDOW', ContentWindowTarget)
+        Epml.registerTargetType(ContentWindowTarget.type, ContentWindowTarget)
 
         // Epml.addTargetHandler({
         //     targetType: 'WINDOW', // Unique type for each target type
