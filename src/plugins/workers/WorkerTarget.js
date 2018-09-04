@@ -53,9 +53,9 @@ class WorkerTarget extends Target {
         // If the source already has an existing target object, simply return it.
         if (sourceTargetMap.has(source)) return sourceTargetMap.get(source)
 
-        if (!this.constructor.test(source)) throw new Error(`Source can not be used with target type '${this.constructor.type}'`)
-
         if (!this.constructor.EpmlReference) throw new Error('No Epml(core) reference')
+
+        if (!this.constructor.test(source)) throw new Error(`Source can not be used with target type '${this.constructor.type}'`)
 
         this._source = source
 

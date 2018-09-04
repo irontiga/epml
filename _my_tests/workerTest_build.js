@@ -7,10 +7,10 @@
      */
 
     class Target {
-        // Need a static getter to check for inheritance...otherwise browser bundles can break
-        static get _isInheritFromTargetBaseClass () {
-            return true
-        }
+        // // Need a static getter to check for inheritance...otherwise browser bundles can break
+        // static get _isInheritedFromTargetBaseClass () {
+        //     return true
+        // }
         /**
             * Last step before sending data. Turns it into a string (obj->JSON)
             * @param {object} data
@@ -483,9 +483,9 @@
             // If the source already has an existing target object, simply return it.
             if (sourceTargetMap.has(source)) return sourceTargetMap.get(source)
 
-            if (!this.constructor.test(source)) throw new Error(`Source can not be used with target type '${this.constructor.type}'`)
-
             if (!this.constructor.EpmlReference) throw new Error('No Epml(core) reference')
+
+            if (!this.constructor.test(source)) throw new Error(`Source can not be used with target type '${this.constructor.type}'`)
 
             this._source = source;
 

@@ -1,0 +1,6 @@
+const PROXY_MESSAGE_TYPE = 'PROXY_MESSAGE' // Message sent to the proxy
+const PROXY_MESSAGE_RESPONSE_TYPE = 'PROXY_MESSAGE_RESPONSE' // From the target back to the proxy
+const PROXIED_MESSAGE_TYPE = 'PROXIED_MESSAGE' // From the proxy to the target
+const PROXIED_MESSAGE_RESPONSE_TYPE = 'PROXIED_MESSAGE_RESPONSE' // From the proxy and back to the original target
+
+export { PROXY_MESSAGE_TYPE, PROXY_MESSAGE_RESPONSE_TYPE, PROXIED_MESSAGE_TYPE, PROXIED_MESSAGE_RESPONSE_TYPE }

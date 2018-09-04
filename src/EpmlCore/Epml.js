@@ -7,7 +7,7 @@ const targetTypes = {}
 
 /**
  * Epml core. Useless on it's own. Needs plugins in order to "do" anything
- * @module EpmlCore
+ * @module Epml
  */
 
 // const epmlRequestTypeHandlers = {}
@@ -19,15 +19,15 @@ const allTargets = [] // No duplication
  * Epml core. All plugins build off this
  * @constructor
  */
-export default class EpmlCore {
+export default class Epml {
     /**
      * Installs a plugin "globally". Every new and existing epml instance will have this plugin enabled
      * @param {object} plugin - Epml plugin
      * @param {object} options - Options config object
      */
     static registerPlugin (plugin, options) {
-        plugin.init(EpmlCore, options)
-        return EpmlCore
+        plugin.init(Epml, options)
+        return Epml
     }
 
     // /**
@@ -79,7 +79,7 @@ export default class EpmlCore {
      * @param {Target} target - Target object from which the message was received
      */
     static handleMessage (strData, target) {
-        const data = EpmlCore.prepareIncomingData(strData)
+        const data = Epml.prepareIncomingData(strData)
 
         if ('EpmlMessageType' in data) {
             messageTypes[data.EpmlMessageType](data, target)
@@ -112,7 +112,7 @@ export default class EpmlCore {
 
         for (const targetSource of targetSources) {
             if (targetSource.allowObjects === undefined) targetSource.allowObjects = false
-            targets.push(...EpmlCore.createTarget(targetSource))
+            targets.push(...Epml.createTarget(targetSource))
         }
 
         return targets

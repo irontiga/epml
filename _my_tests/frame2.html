@@ -1,0 +1,36 @@
+<!DOPCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <body>
+        <h1>Frame 1 :D</h1>
+
+        <script type="module">
+            import Epml from '../src/Epml.js'
+            import contentWindowPlugin from '../src/plugins/contentWindows/contentWindows.js'
+            import proxyPlugin from '../src/plugins/proxy/proxy.js'
+
+            Epml.registerPlugin(contentWindowPlugin)
+            Epml.registerPlugin(proxyPlugin)
+
+            document.addEventListener("DOMContentLoaded", event => {
+                const parentEpml = new Epml({ type: 'WINDOW', source: window.parent })
+
+                parentEpml.ready().then(() => {
+                    console.log('Parent ready')
+                })
+
+                parentEpml.imReady()
+
+                // const frame1Epml = new Epml({type: 'PROXY', source: parentEpml})
+                const frame1Epml = new Epml({type: 'PROXY', source: {proxy: parentEpml, target: 'frame1'}})
+
+
+            })
+
+        </script>
+    </body>
+
+</html>

@@ -6,10 +6,10 @@
  */
 
 class Target {
-    // Need a static getter to check for inheritance...otherwise browser bundles can break
-    static get _isInheritFromTargetBaseClass () {
-        return true
-    }
+    // // Need a static getter to check for inheritance...otherwise browser bundles can break
+    // static get _isInheritedFromTargetBaseClass () {
+    //     return true
+    // }
     /**
         * Last step before sending data. Turns it into a string (obj->JSON)
         * @param {object} data

@@ -15,7 +15,7 @@ module.exports = {
                 '__tests__/*'
             ],
             env: {
-                jest: true // now **/*.test.js files' env has both es6 *and* jest
+                // jest: true // now **/*.test.js files' env has both es6 *and* jest
             },
             plugins: ['jest']
         }
