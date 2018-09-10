@@ -2,7 +2,7 @@
 
 import Target from '../../EpmlCore/Target.js'
 import genUUID from '../../helpers/genUUID.js'
-import { PROXY_MESSAGE_TYPE, PROXY_MESSAGE_RESPONSE_TYPE } from './proxyConfig.js'
+import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
 
 const sourceTargetMap = new Map()
 const proxyTargetMap = new Map()
@@ -89,7 +89,7 @@ class ProxyTarget extends Target {
         message = {
             EpmlMessageType: PROXY_MESSAGE_TYPE,
             requestID: uuid,
-            target: this._source.target,
+            target: this._source.target, // 'frame1' - the registered name
             message
         }
 
