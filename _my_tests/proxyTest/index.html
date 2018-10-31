@@ -1,0 +1,52 @@
+<!DOPCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>Index.html</h1>
+    <iframe src="frame1.html" id="frame1"></iframe>
+    <iframe src="frame2.html" id="frame2"></iframe>
+
+    <script type="module">
+        import Epml from '../../src/Epml.js'
+        import proxyPlugin from '../../src/plugins/proxy/proxy.js'
+
+        // Install worker plugin, not default...for now
+        import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
+        Epml.registerPlugin(contentWindowPlugin)
+        Epml.registerPlugin(proxyPlugin)
+        Epml.allowProxying = true
+
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            const frame1Element = document.getElementById('frame1')
+            const frame2Element = document.getElementById('frame2')
+
+            const frame1Epml = new Epml({ type: 'WINDOW', source: frame1Element })
+            const frame2Epml = new Epml({ type: 'WINDOW', source: frame2Element })
+
+            Epml.registerProxyTarget('frame1', frame1Epml)
+            Epml.registerProxyTarget('frame2', frame2Epml)
+
+            // console.log(frameEpml)
+
+            // frameEpml.ready().then(() => {
+            //     console.log('Frame ready :)')
+            //     setInterval(() => {
+            //         frameEpml.request('hi').then(res => console.log(`Time elapsed: ${res} seconds`))
+            //     }, 3000)
+            // })
+
+            // frameEpml.imReady()
+
+        })
+
+
+
+    </script>
+</body>
+
+</html>

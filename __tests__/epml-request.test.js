@@ -1,4 +1,4 @@
-import Epml from '../src/EpmlCore/EpmlCore.js'
+import Epml from '../src/Epml/Epml.js'
 import EpmlRequestPlugin from '../src/plugins/request/request.js'
 
 describe('Load request', () => {

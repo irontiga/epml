@@ -1,0 +1,37 @@
+<!DOPCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>Frame 1</h1>
+    <script type="module">
+        import Epml from '../../src/Epml.js'
+        import proxyPlugin from '../../src/plugins/proxy/proxy.js'
+
+        // Install worker plugin, not default...for now
+        import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
+        Epml.registerPlugin(contentWindowPlugin)
+        Epml.registerPlugin(proxyPlugin)
+
+        const parentEpml = new Epml({
+            type: 'WINDOW',
+            source: window.parent
+        })
+
+        const frame2Epml = new Epml({
+            type: 'PROXY',
+            source: {
+                proxy: parentEpml,
+                target: 'frame2'
+            }
+        })
+
+        frame2Epml.request('test').then(res => console.log(`In frame 1: ${res}`))
+
+    </script>
+</body>
+
+</html>

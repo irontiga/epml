@@ -1,0 +1,38 @@
+<!DOPCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>Frame 2</h1>
+    <script type="module">
+        import Epml from '../../src/Epml.js'
+        import proxyPlugin from '../../src/plugins/proxy/proxy.js'
+
+        // Install worker plugin, not default...for now
+        import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
+        Epml.registerPlugin(contentWindowPlugin)
+        Epml.registerPlugin(proxyPlugin)
+        
+        const parentEpml = new Epml({
+            type: 'WINDOW',
+            source: window.parent
+        })
+        
+        const frame1Epml = new Epml({
+            type: 'PROXY',
+            source: {
+                proxy: parentEpml,
+                target: 'frame1'
+            }
+        })
+
+        frame1Epml.route('test', async => {
+            return "HELLO FROM FRAME 2"
+        })
+    </script>
+</body>
+
+</html>

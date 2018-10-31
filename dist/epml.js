@@ -41,15 +41,15 @@ const targetTypes = {};
  * Epml core. All plugins build off this
  * @constructor
  */
-class EpmlCore {
+class Epml {
     /**
      * Installs a plugin "globally". Every new and existing epml instance will have this plugin enabled
      * @param {object} plugin - Epml plugin
      * @param {object} options - Options config object
      */
     static registerPlugin (plugin, options) {
-        plugin.init(EpmlCore, options);
-        return EpmlCore
+        plugin.init(Epml, options);
+        return Epml
     }
 
     // /**
@@ -80,10 +80,12 @@ class EpmlCore {
         if (type in targetTypes) throw new Error('Target type has already been registered')
         if (!(targetConstructor.prototype instanceof Target)) throw new Error('Target constructors must inherit from the Target base class')
         targetTypes[type] = targetConstructor;
+        return Epml
     }
 
     static registerEpmlMessageType (type, fn) {
         messageTypes[type] = fn;
+        return Epml
     }
 
     /**
@@ -101,7 +103,7 @@ class EpmlCore {
      * @param {Target} target - Target object from which the message was received
      */
     static handleMessage (strData, target) {
-        const data = EpmlCore.prepareIncomingData(strData);
+        const data = Epml.prepareIncomingData(strData);
 
         if ('EpmlMessageType' in data) {
             messageTypes[data.EpmlMessageType](data, target);
@@ -134,7 +136,7 @@ class EpmlCore {
 
         for (const targetSource of targetSources) {
             if (targetSource.allowObjects === undefined) targetSource.allowObjects = false;
-            targets.push(...EpmlCore.createTarget(targetSource));
+            targets.push(...Epml.createTarget(targetSource));
         }
 
         return targets
@@ -178,4 +180,4 @@ class EpmlCore {
     }
 }
 
-module.exports = EpmlCore;
+module.exports = Epml;

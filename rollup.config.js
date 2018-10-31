@@ -1,7 +1,7 @@
 // rollup.config.js
 export default [
     {
-        input: 'src/EpmlCore/EpmlCore.js',
+        input: 'src/EpmlCore/Epml.js',
         output: [
             {
                 file: 'dist/epml.js',

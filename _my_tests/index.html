@@ -8,16 +8,23 @@
 
         <script type="module">
             import Epml from '../src/Epml.js'
+            import proxyPlugin from '../src/plugins/proxy/proxy.js'
 
             // Install worker plugin, not default...for now
             import contentWindowPlugin from '../src/plugins/contentWindows/contentWindows.js'
             Epml.registerPlugin(contentWindowPlugin)
+            Epml.registerPlugin(proxyPlugin)
+            Epml.allowProxying = true
             
-
+            
             document.addEventListener("DOMContentLoaded", function (event) {
-                const frameElement = document.getElementById('frame1')
-
-                const frameEpml = new Epml({ type: 'WINDOW', source: frameElement })
+                const frame1Element = document.getElementById('frame1')
+                
+                const frame1Epml = new Epml({ type: 'WINDOW', source: frame1Element })
+                
+                // This is going to change to....
+                // const frame1ProxyEpml = new Epml({type: 'PROXY', source: { epmlInstance: frame1Epml, id: 'frame1'}})
+                Epml.registerProxyTarget('frame1', frame1Epml)
 
                 // console.log(frameEpml)
 

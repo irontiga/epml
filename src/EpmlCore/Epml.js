@@ -14,6 +14,8 @@ const targetTypes = {}
 // const targetConstructors = []
 
 const allTargets = [] // No duplication
+// Change this to have id based targets, and therefore the ability to access any target anywhere always as long as you have it's id (don't need to pass objects around)
+// const allTargets = {}
 
 /**
  * Epml core. All plugins build off this
@@ -58,10 +60,12 @@ export default class Epml {
         if (type in targetTypes) throw new Error('Target type has already been registered')
         if (!(targetConstructor.prototype instanceof Target)) throw new Error('Target constructors must inherit from the Target base class')
         targetTypes[type] = targetConstructor
+        return Epml
     }
 
     static registerEpmlMessageType (type, fn) {
         messageTypes[type] = fn
+        return Epml
     }
 
     /**

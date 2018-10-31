@@ -84,7 +84,8 @@ function requestResponseHandler (data, target) {
 
 function requestHandler (data, target) {
     // console.log('REQUESTHANLDER')
-    // console.log(routeMap)
+    console.log(routeMap)
+    console.log(target)
     if (!routeMap.has(target)) {
         // Error, route does not exist
         console.warn(`Route does not exist - missing target`)

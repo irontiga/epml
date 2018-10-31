@@ -5,7 +5,7 @@ import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
 import ProxyTarget from './ProxyTarget.js'
 import ProxySourceTarget from './ProxySourceTarget.js'
 import TwoWayMap from './TwoWayMap.js'
-import genUUID from '../../helpers/genUUID.js';
+import genUUID from '../../helpers/genUUID.js'
 
 const proxyTargets = {} // Name : ID map...ID for below twowaymap
 const proxySources = new TwoWayMap() // Maps a source target to an id (the target the proxy request came from). This is used in the proxy window (the window the client and source communicate through)
@@ -41,10 +41,11 @@ export default {
 
         // Epml.addTargetConstructor(ContentWindowTarget)
         Epml.registerTargetType(ProxyTarget.type, ProxyTarget)
+        Epml.registerTargetType(ProxySourceTarget.type, ProxySourceTarget)
 
         Epml.registerProxyTarget = registerProxyTarget
 
-        Epml.registerMessageHandler(PROXY_MESSAGE_TYPE, proxyMessageHandler)
+        Epml.registerEpmlMessageType(PROXY_MESSAGE_TYPE, proxyMessageHandler)
     }
 }
 
@@ -79,14 +80,15 @@ function registerProxyTarget (name, target) {
 
 function proxyMessageHandler (data, target) {
     // data.proxyMessageType = ''
-    proxyMessageTypes[data.proxyMesageType](data, target)
+    console.log(data)
+    proxyMessageTypes[data.proxyMessageType](data, target)
 }
 
 // In proxy window, target = where the message came from, and so target is really the client...
 function proxyRequestHandler (data, target) {
     // Pass on to the proxy's target...targets must be pre-registered (so pretty much if you don't register any proxy targets, you disable proxying)
     // Recipient
-    const proxyTarget = proxySources.getByValue(data.targetID)
+    const proxyTarget = proxySources.getByValue(proxyTargets[data.target])
     // proxyTargets[data.target]
     if (!proxyTarget) {
         console.warn(`Target ${data.target} not registered.`)
@@ -100,15 +102,19 @@ function proxyRequestHandler (data, target) {
 
     data.proxyClientID = clientID
 
-    proxyTarget.sendMessage(data)
+    console.log(proxyTarget)
+    proxyTarget.targets.forEach(target => target.sendMessage(data))
 }
 
 // In proxy target window. Now target is the proxy window.
 function proxyRequestDeliveryHandler (data, target) {
     // Special target object's sendMessage function sends a proxy message through the proxy :)
-    EpmlReference.handleMessage(data.message, new ProxySourceTarget({
-        proxyTarget: target,
-        clientTarget: data.proxyClientID
+    EpmlReference.handleMessage(data.message, new EpmlReference({
+        type: 'PROXY_SOURCE',
+        source: {
+            proxyTarget: target,
+            clientTarget: data.proxyClientID
+        }
     }))
 }
 // // In proxy window

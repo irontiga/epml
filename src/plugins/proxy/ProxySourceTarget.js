@@ -1,5 +1,4 @@
 import Target from '../../EpmlCore/Target.js'
-import genUUID from '../../helpers/genUUID.js'
 import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
 
 const sourceTargetMap = new Map() // Stores all the targets, in order to avoid duplicates
@@ -30,7 +29,7 @@ class ProxySourceTarget extends Target {
     }
 
     static get description () {
-        return `Poses as a target, but converts messages and passes them on to the proxy's target`
+        return 'Poses as a target, but converts messages and passes them on to the proxy\'s target'
     }
 
     static test (source) {

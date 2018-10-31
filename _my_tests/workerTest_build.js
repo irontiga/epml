@@ -42,15 +42,15 @@
      * Epml core. All plugins build off this
      * @constructor
      */
-    class EpmlCore {
+    class Epml {
         /**
          * Installs a plugin "globally". Every new and existing epml instance will have this plugin enabled
          * @param {object} plugin - Epml plugin
          * @param {object} options - Options config object
          */
         static registerPlugin (plugin, options) {
-            plugin.init(EpmlCore, options);
-            return EpmlCore
+            plugin.init(Epml, options);
+            return Epml
         }
 
         // /**
@@ -81,10 +81,12 @@
             if (type in targetTypes) throw new Error('Target type has already been registered')
             if (!(targetConstructor.prototype instanceof Target)) throw new Error('Target constructors must inherit from the Target base class')
             targetTypes[type] = targetConstructor;
+            return Epml
         }
 
         static registerEpmlMessageType (type, fn) {
             messageTypes[type] = fn;
+            return Epml
         }
 
         /**
@@ -102,7 +104,7 @@
          * @param {Target} target - Target object from which the message was received
          */
         static handleMessage (strData, target) {
-            const data = EpmlCore.prepareIncomingData(strData);
+            const data = Epml.prepareIncomingData(strData);
 
             if ('EpmlMessageType' in data) {
                 messageTypes[data.EpmlMessageType](data, target);
@@ -135,7 +137,7 @@
 
             for (const targetSource of targetSources) {
                 if (targetSource.allowObjects === undefined) targetSource.allowObjects = false;
-                targets.push(...EpmlCore.createTarget(targetSource));
+                targets.push(...Epml.createTarget(targetSource));
             }
 
             return targets
@@ -180,7 +182,7 @@
     }
 
     // https://gist.github.com/LeverOne/1308368
-    var genUUID = (a, b) => { for (b = a = ''; a++ < 36; b += a * 51 & 52 ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-'); return b }
+    var genUUID = (a, b) => { for (b = a = ''; a++ < 36; b += a * 51 & 52 ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-'); return b };
 
     // function () {
     //     return (1 + Math.random()).toString(36)
@@ -267,7 +269,8 @@
 
     function requestHandler (data, target) {
         // console.log('REQUESTHANLDER')
-        // console.log(routeMap)
+        console.log(routeMap);
+        console.log(target);
         if (!routeMap.has(target)) {
             // Error, route does not exist
             console.warn(`Route does not exist - missing target`);
@@ -427,8 +430,8 @@
      */
 
     // Epml.registerPlugin(contentWindowsPlugin)
-    EpmlCore.registerPlugin(requestPlugin);
-    EpmlCore.registerPlugin(readyPlugin);
+    Epml.registerPlugin(requestPlugin);
+    Epml.registerPlugin(readyPlugin);
 
     const sourceTargetMap = new Map();
 
@@ -522,17 +525,17 @@
             // Epml.addTargetConstructor(ContentWindowTarget)
             Epml.registerTargetType(WorkerTarget.type, WorkerTarget);
         }
-    }
+    };
 
     // importScripts('../dist/epml.browser.js')
     // importScripts('../dist/plugins/workers/workers.browser.js')
-    EpmlCore.registerPlugin(EpmlWorkerPlugin);
+    Epml.registerPlugin(EpmlWorkerPlugin);
 
     postMessage({});
 
     // console.log(self instanceof WorkerGlobalScope)
 
-    const workerParentEpml = new EpmlCore({type: 'WORKER', source: self});
+    const workerParentEpml = new Epml({type: 'WORKER', source: self});
 
     workerParentEpml.route('RandNum', async req => {
         return Math.random()

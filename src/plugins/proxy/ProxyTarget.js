@@ -4,17 +4,43 @@ import Target from '../../EpmlCore/Target.js'
 import genUUID from '../../helpers/genUUID.js'
 import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
 
-const sourceTargetMap = new Map()
+// const sourceTargetMap = new Map()
+// const proxyTargetMap = new Map()
+
+// Stores source.proxy => new Map([[source.target, new ProxyTarget(source)]])
 const proxyTargetMap = new Map()
+
+/**
+ *  source = {
+ *      target:'frame1',
+ *      proxy: epmlInstance
+ *  }
+ */
 
 /**
  * Can only take ONE iframe or popup as source
  */
 class ProxyTarget extends Target {
     static get sources () {
-        return Array.from(sourceTargetMap.keys())
+        const sources = []
+        for (const [proxySource, valueMap] of proxyTargetMap) {
+            for (const [target] of valueMap) {
+                sources.push({
+                    target,
+                    proxy: proxySource
+                })
+            }
+        }
+        Array.from(proxyTargetMap.entries()).map((sourceProxy, valueMap) => {
+            return {
+                proxy: sourceProxy,
+                target: Array.from(valueMap.keys())[0]
+            }
+        })
     }
-
+    // ==================================================
+    // ALL THIS NEEDS REWORKING. BUT PROBABLY NOT URGENT
+    // ==================================================
     static get targets () {
         return Array.from(sourceTargetMap.values())
     }
@@ -42,8 +68,9 @@ class ProxyTarget extends Target {
     static test (source) {
         if (typeof source !== 'object') return false
         // console.log('FOCUS FNS', source.focus === window.focus)
-        if (!(source.proxy instanceof this.constructor.Epml)) return false
+        if (!(source.proxy instanceof this.Epml)) return false
         // return (source === source.window && source.focus === window.focus)
+        return true
     }
 
     isFrom (source) {
@@ -62,16 +89,20 @@ class ProxyTarget extends Target {
         this._source = source
 
         // sourceTargetMap.set(source, this)
-        proxyTargetMap.set(source.proxy)
-        let proxyTargets
-        if (proxyTargetMap.has(source.proxy)) {
-            proxyTargets = proxyTargetMap.get(source.proxy)
-        } else {
-            proxyTargets = {}
-        }
-        if (proxyTargets[source.target]) return proxyTargets[source.target]
 
-        proxyTargets[source.target] = this
+        let proxyTargets
+        // proxyTargetMap.set(source.proxy)
+        // let proxyTargets
+        // console.log(source.proxy)
+        // if (proxyTargetMap.has(source.proxy)) {
+        //     proxyTargets = proxyTargetMap.get(source.proxy)
+        //     console.log(proxyTargets)
+        // } else {
+        //     proxyTargets = {}
+        // }
+        // if (proxyTargets[source.target]) return proxyTargets[source.target]
+
+        // proxyTargets[source.target] = this
 
         // targetWindows.push(source)
     }
@@ -88,12 +119,14 @@ class ProxyTarget extends Target {
 
         message = {
             EpmlMessageType: PROXY_MESSAGE_TYPE,
+            proxyMessageType: 'REQUEST',
             requestID: uuid,
             target: this._source.target, // 'frame1' - the registered name
             message
         }
 
-        this._source.proxy.sendMessage(message)
+        console.log(this._source)
+        this._source.proxy.targets.forEach(target => target.sendMessage(message))
     }
 }
 
