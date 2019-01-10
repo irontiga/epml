@@ -1,11 +1,12 @@
 // Proxy is a "normal" target, but it intercepts the message, changes the type, and passes it on to the target window, where it's received by the proxy handler...message type reverted, and passed to handleMessage with the actual target
 'use strict'
 
-import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
 import ProxyTarget from './ProxyTarget.js'
 import ProxySourceTarget from './ProxySourceTarget.js'
 import TwoWayMap from './TwoWayMap.js'
 import genUUID from '../../helpers/genUUID.js'
+
+import { PROXY_MESSAGE_TYPE } from './proxyConstants.js'
 
 const proxyTargets = {} // Name : ID map...ID for below twowaymap
 const proxySources = new TwoWayMap() // Maps a source target to an id (the target the proxy request came from). This is used in the proxy window (the window the client and source communicate through)
@@ -18,6 +19,7 @@ const proxySources = new TwoWayMap() // Maps a source target to an id (the targe
  *  - responseDelivery
  * Delivery message are the messages being delivered to the proxy target. Other messages are directed towards the proxy
  */
+// Probably treat responses and requests the same....just data being passed to a target, with information about the source target
 const proxyMessageTypes = {
     'REQUEST': proxyRequestHandler,
     'REQUEST_DELIVERY': proxyRequestDeliveryHandler
@@ -25,6 +27,8 @@ const proxyMessageTypes = {
     // 'RESPONSE': proxyResponseHandler,
     // 'RESPONSE_DELIVERY': proxyResponseDeliveryHandler
 }
+
+// There will be two message states....transit or delivery. Transit is sent to the proxy....delivery is sent to the target....the source simply being the target in the opposit direction
 
 let EpmlReference
 

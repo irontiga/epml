@@ -12,24 +12,26 @@
 
     <script type="module">
         import Epml from '../../src/Epml.js'
-        import proxyPlugin from '../../src/plugins/proxy/proxy.js'
+        import proxyPlugin from '../../src/plugins/proxy2/proxy2.js'
 
         // Install worker plugin, not default...for now
         import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
         Epml.registerPlugin(contentWindowPlugin)
         Epml.registerPlugin(proxyPlugin)
-        Epml.allowProxying = true
+        Epml.allowProxying = true // Allows other targets to communicate through this instance
 
 
         document.addEventListener("DOMContentLoaded", function (event) {
             const frame1Element = document.getElementById('frame1')
             const frame2Element = document.getElementById('frame2')
 
+            // Make it possible for this window to communicate with these frames
             const frame1Epml = new Epml({ type: 'WINDOW', source: frame1Element })
             const frame2Epml = new Epml({ type: 'WINDOW', source: frame2Element })
 
-            Epml.registerProxyTarget('frame1', frame1Epml)
-            Epml.registerProxyTarget('frame2', frame2Epml)
+            // Register them with ids so that other windows can send to them
+            Epml.registerProxyInstance('frame1', frame1Epml) // Needs to make a new target here...or not....AHHH SO COMPLEX
+            Epml.registerProxyInstance('frame2', frame2Epml)
 
             // console.log(frameEpml)
 

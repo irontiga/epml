@@ -9,7 +9,7 @@
     <h1>Frame 1</h1>
     <script type="module">
         import Epml from '../../src/Epml.js'
-        import proxyPlugin from '../../src/plugins/proxy/proxy.js'
+        import proxyPlugin from '../../src/plugins/proxy2/proxy2.js'
 
         // Install worker plugin, not default...for now
         import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
@@ -25,7 +25,8 @@
             type: 'PROXY',
             source: {
                 proxy: parentEpml,
-                target: 'frame2'
+                target: 'frame2',
+                id: 'frame1' // self id for responses, matches that in proxy.html
             }
         })
 

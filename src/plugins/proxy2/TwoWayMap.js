@@ -8,6 +8,14 @@ class TwoWayMap {
         })
     }
 
+    values () {
+        return this._map.values()
+    }
+
+    entries () {
+        return this._map.entries()
+    }
+
     push (key, value) {
         this._map.set(key, value)
         this._revMap.set(value, key)

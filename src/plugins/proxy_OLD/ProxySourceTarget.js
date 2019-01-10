@@ -1,5 +1,5 @@
 import Target from '../../EpmlCore/Target.js'
-import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
+import { PROXY_MESSAGE_TYPE } from './proxyConstants.js'
 
 const sourceTargetMap = new Map() // Stores all the targets, in order to avoid duplicates
 

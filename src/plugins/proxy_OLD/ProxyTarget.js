@@ -2,8 +2,8 @@
 
 import Target from '../../EpmlCore/Target.js'
 import genUUID from '../../helpers/genUUID.js'
-import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
-
+// import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
+import { PROXY_MESSAGE_TYPE } from './proxyConstants.js'
 // const sourceTargetMap = new Map()
 // const proxyTargetMap = new Map()
 

@@ -43,7 +43,7 @@ const requestFn = function (requestType, data, timeout) {
             requestOrResponse: 'request',
             requestID: uuid,
             requestType,
-            data
+            data // If data is undefined it's simply omitted :)
         }
 
         target.sendMessage(message)
@@ -85,6 +85,7 @@ function requestResponseHandler (data, target) {
 function requestHandler (data, target) {
     // console.log('REQUESTHANLDER')
     console.log(routeMap)
+    console.log(data)
     console.log(target)
     if (!routeMap.has(target)) {
         // Error, route does not exist
