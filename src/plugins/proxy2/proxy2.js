@@ -34,7 +34,7 @@ export default {
 }
 
 function proxyMessageHandler (data, target) {
-    console.log(data)
+    // console.log(data)
     // SWITCH BASED ON STATE === TRANSIT OR DELIVERY
     // If it's in transit, then look up the id in the map and pass the corresponding target...
     // YES! Instead of creating a new target that will translate to send to the thing....you look up the source's id....it will (have to) correspond to the source object created in this window :)
@@ -48,25 +48,25 @@ function proxyMessageHandler (data, target) {
         }
 
         data.state = 'DELIVERY'
-        console.log(targetInstance)
+        // console.log(targetInstance)
         targetInstance.targets.forEach(target => target.sendMessage(data))
         // targets.targets[0].sendMessage(data)
     } else if (data.state === 'DELIVERY') {
         // This target is a target created through type: proxy
         const target = proxySources.getByKey(data.target)
-        console.log(target)
-        console.log(proxySources)
-        console.log(data)
+        // console.log(target)
+        // console.log(proxySources)
+        // console.log(data)
         EpmlReference.handleMessage(data.message, target)
     }
 }
 
 // NOT A TARGET....IT'S AN EPML INSTANCE
 function registerProxyInstance (id, target) {
-    console.log(target, id)
+    // console.log(target, id)
     if (proxySources.hasKey(id)) console.warn(`${id} is already defined. Overwriting...`)
     proxySources.push(id, target)
-    console.log(proxySources)
+    // console.log(proxySources)
 }
 
 // I need to pass the proxySources twowaymap to the proxyTarget object, so that any new target created through it can be pushed to it

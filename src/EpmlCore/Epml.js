@@ -85,7 +85,7 @@ export default class Epml {
     static handleMessage (strData, target) {
         // Changes to targetID...and gets fetched through Epml.targets[targetID]...or something like that
         const data = Epml.prepareIncomingData(strData)
-        console.log(target)
+        // console.log(target)
         if ('EpmlMessageType' in data) {
             messageTypes[data.EpmlMessageType](data, target)
         }

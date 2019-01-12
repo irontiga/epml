@@ -36,6 +36,8 @@ class Target {
 
 const messageTypes = {};
 const targetTypes = {};
+// Change this to have id based targets, and therefore the ability to access any target anywhere always as long as you have it's id (don't need to pass objects around)
+// const allTargets = {}
 
 /**
  * Epml core. All plugins build off this
@@ -103,12 +105,12 @@ class Epml {
      * @param {Target} target - Target object from which the message was received
      */
     static handleMessage (strData, target) {
+        // Changes to targetID...and gets fetched through Epml.targets[targetID]...or something like that
         const data = Epml.prepareIncomingData(strData);
-
+        // console.log(target)
         if ('EpmlMessageType' in data) {
             messageTypes[data.EpmlMessageType](data, target);
         }
-
         // Then send a response or whatever back with target.sendMessage(this.constructor.prepareOutgoingData(someData))
     }
 

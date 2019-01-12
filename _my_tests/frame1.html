@@ -9,12 +9,14 @@
         <script type="module">
         import Epml from '../src/Epml.js'
         import contentWindowPlugin from '../src/plugins/contentWindows/contentWindows.js'
-            import workerPlugin from '../src/plugins/workers/workers.js'
+        import workerPlugin from '../src/plugins/workers/workers.js'
+        import onReady from './onReady.js'
+        
         Epml.registerPlugin(contentWindowPlugin)
         Epml.registerPlugin(workerPlugin)
         const startTime = Date.now()
-        
-        document.addEventListener("DOMContentLoaded", event => {
+
+        onReady(() => {
             const parentEpml = new Epml({ type: 'WINDOW', source: window.parent })
 
             parentEpml.ready().then(() => {
@@ -23,7 +25,7 @@
                     return (Date.now() - startTime) / 1000
                 })
             })
-
+            console.log('in frame1.html')
             parentEpml.imReady()
         })
 
@@ -31,20 +33,21 @@
          * === WEBWORKER ===
          */
 
-        const worker = new Worker('workerTest_build.js')
-        const workerEpml = new Epml({type: 'WORKER', source: worker})
+        // const worker = new Worker('workerTest_build.js')
+        // const workerEpml = new Epml({type: 'WORKER', source: worker})
 
-        console.log('INDEX: ', workerEpml)
+        // console.log('INDEX: ', workerEpml)
 
-        workerEpml.ready().then(() => {
-            console.log('Worker is ready :)')
+        // workerEpml.ready().then(() => {
+        //     console.log('Worker is ready :)')
 
-            workerEpml.request('RandNum').then(res => {
-                console.log(`Got random number ${res}`)
-            })
-        })
+        //     workerEpml.request('RandNum').then(res => {
+        //         console.log(`Got random number ${res}`)
+        //     })
+        // })
 
-        workerEpml.imReady()
+        // workerEpml.imReady()
+        // console.log('workerEpml', workerEpml)
             
         </script>
     </body>

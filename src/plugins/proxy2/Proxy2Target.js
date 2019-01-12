@@ -114,8 +114,10 @@ class ProxyTarget extends Target {
             id: this._source.id
         }
 
-        console.log(this._source)
-        this._source.proxy.targets.forEach(target => target.sendMessage(message))
+        // console.log(this._source)
+        // Doesn't need to loop through, as a proxy should only ever have a single proxy target (although the target can have multiple...it just shouldn't send THROUGH multiple targets)
+        this._source.proxy.targets[0].sendMessage(message)
+        // this._source.proxy.targets.forEach(target => target.sendMessage(messaage))
     }
 }
 

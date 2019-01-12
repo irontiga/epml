@@ -30,7 +30,10 @@
             }
         })
 
-        frame2Epml.request('test').then(res => console.log(`In frame 1: ${res}`))
+        frame2Epml.ready().then(() => {
+            console.log('In frame1....frame2 is ready :)')
+            frame2Epml.request('test').then(res => console.log(`In frame 1: ${res}`))
+        })
 
     </script>
 </body>

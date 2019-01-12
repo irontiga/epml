@@ -33,6 +33,10 @@
         frame1Epml.route('test', async => {
             return "HELLO FROM FRAME 2"
         })
+
+        setTimeout(() => {
+            frame1Epml.imReady()
+        }, 5000) // Nice test :)
     </script>
 </body>
 

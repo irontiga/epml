@@ -16,8 +16,8 @@ workerParentEpml.route('RandNum', async req => {
 
 console.log('WORKER: ', workerParentEpml)
 
-workerParentEpml.imReady()
+// workerParentEpml.imReady()
 
 workerParentEpml.ready().then(() => {
-    console.log('Worker\'s parent is ready :)')
+    console.log('Worker\'s parent is ready ...frame1.html')
 })

@@ -27,7 +27,9 @@ const readyPlugin = {
     }
 }
 
+// This is the only part in the other "window"
 function respondToReadyRequest (data, target) {
+    if (!target._i_am_ready) return
     target.sendMessage({
         EpmlMessageType: READY_MESSAGE_RESPONSE_TYPE,
         requestID: data.requestID
@@ -37,7 +39,7 @@ function respondToReadyRequest (data, target) {
 function imReadyPrototype () {
     console.log('I\'m ready called', this)
     for (const target of this.targets) {
-        target._target_is_ready = true
+        target._i_am_ready = true
     }
     // this._ready_plugin.imReady = true
 }
@@ -68,6 +70,7 @@ function readyPrototype () {
 }
 
 function checkReady (targets) {
+    console.log('Checking', targets)
     this._ready_plugin = this._ready_plugin || {}
     this._ready_plugin.pendingReadyResolves = []
 
@@ -76,6 +79,8 @@ function checkReady (targets) {
             const id = genUUID()
             // Send a message at an interval.
             const inteval = setInterval(() => {
+                console.log('interval')
+                // , this, window.location
                 target.sendMessage({
                     EpmlMessageType: READY_MESSAGE_TYPE,
                     requestID: id
@@ -84,6 +89,7 @@ function checkReady (targets) {
 
             // Clear the interval and resolve the promise
             pendingReadyRequests[id] = () => {
+                console.log('RESOLVING')
                 clearInterval(inteval)
                 resolve()
             }
@@ -95,10 +101,13 @@ function checkReady (targets) {
 
 // Sets ready for a SINGLE TARGET
 function readyResponseHandler (data, target) {
+    console.log('response')
     // console.log('==== THIS TARGET IS REEEEEAAADDDDYYY ====')
     // console.log(target)
-    // target._ready_plugin = target._ready_plugin || {}
-    if (!target._target_is_ready) return
+
+    target._ready_plugin = target._ready_plugin || {}
+    target._ready_plugin._is_ready = true
+
     pendingReadyRequests[data.requestID]()
 }
 

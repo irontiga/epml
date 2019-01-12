@@ -37,6 +37,8 @@
 
     const messageTypes = {};
     const targetTypes = {};
+    // Change this to have id based targets, and therefore the ability to access any target anywhere always as long as you have it's id (don't need to pass objects around)
+    // const allTargets = {}
 
     /**
      * Epml core. All plugins build off this
@@ -104,12 +106,12 @@
          * @param {Target} target - Target object from which the message was received
          */
         static handleMessage (strData, target) {
+            // Changes to targetID...and gets fetched through Epml.targets[targetID]...or something like that
             const data = Epml.prepareIncomingData(strData);
-
+            // console.log(target)
             if ('EpmlMessageType' in data) {
                 messageTypes[data.EpmlMessageType](data, target);
             }
-
             // Then send a response or whatever back with target.sendMessage(this.constructor.prepareOutgoingData(someData))
         }
 
@@ -228,7 +230,7 @@
                 requestOrResponse: 'request',
                 requestID: uuid,
                 requestType,
-                data
+                data // If data is undefined it's simply omitted :)
             };
 
             target.sendMessage(message);
@@ -269,8 +271,9 @@
 
     function requestHandler (data, target) {
         // console.log('REQUESTHANLDER')
-        console.log(routeMap);
-        console.log(target);
+        // console.log(routeMap)
+        // console.log(data)
+        // console.log(target)
         if (!routeMap.has(target)) {
             // Error, route does not exist
             console.warn(`Route does not exist - missing target`);
@@ -349,7 +352,9 @@
         }
     };
 
+    // This is the only part in the other "window"
     function respondToReadyRequest (data, target) {
+        if (!target._i_am_ready) return
         target.sendMessage({
             EpmlMessageType: READY_MESSAGE_RESPONSE_TYPE,
             requestID: data.requestID
@@ -359,7 +364,7 @@
     function imReadyPrototype () {
         console.log('I\'m ready called', this);
         for (const target of this.targets) {
-            target._target_is_ready = true;
+            target._i_am_ready = true;
         }
         // this._ready_plugin.imReady = true
     }
@@ -390,6 +395,7 @@
     }
 
     function checkReady (targets) {
+        console.log('Checking', targets);
         this._ready_plugin = this._ready_plugin || {};
         this._ready_plugin.pendingReadyResolves = [];
 
@@ -398,6 +404,8 @@
                 const id = genUUID();
                 // Send a message at an interval.
                 const inteval = setInterval(() => {
+                    console.log('interval');
+                    // , this, window.location
                     target.sendMessage({
                         EpmlMessageType: READY_MESSAGE_TYPE,
                         requestID: id
@@ -406,6 +414,7 @@
 
                 // Clear the interval and resolve the promise
                 pendingReadyRequests[id] = () => {
+                    console.log('RESOLVING');
                     clearInterval(inteval);
                     resolve();
                 };
@@ -417,10 +426,13 @@
 
     // Sets ready for a SINGLE TARGET
     function readyResponseHandler (data, target) {
+        console.log('response');
         // console.log('==== THIS TARGET IS REEEEEAAADDDDYYY ====')
         // console.log(target)
-        // target._ready_plugin = target._ready_plugin || {}
-        if (!target._target_is_ready) return
+
+        target._ready_plugin = target._ready_plugin || {};
+        target._ready_plugin._is_ready = true;
+
         pendingReadyRequests[data.requestID]();
     }
 
@@ -543,10 +555,10 @@
 
     console.log('WORKER: ', workerParentEpml);
 
-    workerParentEpml.imReady();
+    // workerParentEpml.imReady()
 
     workerParentEpml.ready().then(() => {
-        console.log('Worker\'s parent is ready :)');
+        console.log('Worker\'s parent is ready ...frame1.html');
     });
 
 }());
