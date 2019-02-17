@@ -4,7 +4,7 @@ import Target from '../../EpmlCore/Target.js'
 import genUUID from '../../helpers/genUUID.js'
 import TwoWayMap from './TwoWayMap.js'
 // import { PROXY_MESSAGE_TYPE } from './proxyConfig.js'
-import { PROXY_MESSAGE_TYPE } from './proxy2Constants.js'
+import { PROXY_MESSAGE_TYPE } from './proxyConstants.js'
 
 // Stores source.proxy => new Map([[source.target, new ProxyTarget(source)]])
 const proxySources = new TwoWayMap()

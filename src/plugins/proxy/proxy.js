@@ -1,9 +1,9 @@
 // Proxy is a "normal" target, but it intercepts the message, changes the type, and passes it on to the target window, where it's received by the proxy handler...message type reverted, and passed to handleMessage with the actual target
 'use strict'
 
-import ProxyTarget from './Proxy2Target.js'
+import ProxyTarget from './ProxyTarget.js'
 
-import { PROXY_MESSAGE_TYPE } from './proxy2Constants.js'
+import { PROXY_MESSAGE_TYPE } from './proxyConstants.js'
 // import Target from '../../EpmlCore/Target.js';
 // Stores id => target (and reverse). Can be used in the host and the target...targets just have different roles :)
 // const proxySources = new TwoWayMap() // Map id to it's target :) OOOHHHHH....MAYBE THIS SHOULD BE IN THE PROXYTARGET...AND IT GET ACCESSED FROM HERE. DUH!!!
