@@ -1,6 +1,6 @@
 {
   "name": "epml",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Extensible postMessage library",
   "main": "dist/epml.all.js",
   "module": "src/epml.all.js",
@@ -8,11 +8,11 @@
   "directories": {
     "test": "test"
   },
-  "keywords" : [
-      "javascript",
-      "js",
-      "postmessage",
-      "epml"
+  "keywords": [
+    "javascript",
+    "js",
+    "postmessage",
+    "epml"
   ],
   "scripts": {
     "test": "jest",
