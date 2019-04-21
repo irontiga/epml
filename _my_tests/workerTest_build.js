@@ -292,7 +292,7 @@
     }
 
     function createRoute (route, fn) {
-        console.log(`CREATING ROUTTTEEE "${route}"`);
+        // console.log(`CREATING ROUTTTEEE "${route}"`)
         if (!this.routes) this.routes = {};
 
         if (this.routes[route]) return
@@ -362,7 +362,7 @@
     }
 
     function imReadyPrototype () {
-        console.log('I\'m ready called', this);
+        // console.log('I\'m ready called', this)
         for (const target of this.targets) {
             target._i_am_ready = true;
         }
@@ -395,7 +395,7 @@
     }
 
     function checkReady (targets) {
-        console.log('Checking', targets);
+        // console.log('Checking', targets)
         this._ready_plugin = this._ready_plugin || {};
         this._ready_plugin.pendingReadyResolves = [];
 
@@ -404,7 +404,7 @@
                 const id = genUUID();
                 // Send a message at an interval.
                 const inteval = setInterval(() => {
-                    console.log('interval');
+                    // console.log('interval')
                     // , this, window.location
                     target.sendMessage({
                         EpmlMessageType: READY_MESSAGE_TYPE,
@@ -414,7 +414,7 @@
 
                 // Clear the interval and resolve the promise
                 pendingReadyRequests[id] = () => {
-                    console.log('RESOLVING');
+                    // console.log('RESOLVING')
                     clearInterval(inteval);
                     resolve();
                 };
@@ -426,7 +426,7 @@
 
     // Sets ready for a SINGLE TARGET
     function readyResponseHandler (data, target) {
-        console.log('response');
+        // console.log('response')
         // console.log('==== THIS TARGET IS REEEEEAAADDDDYYY ====')
         // console.log(target)
 

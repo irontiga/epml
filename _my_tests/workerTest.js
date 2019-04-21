@@ -1,4 +1,4 @@
-import Epml from '../src/Epml.js'
+import Epml from '../src/Epml_core.js'
 import EpmlWorkerPlugin from '../src/plugins/workers/workers.js'
 // importScripts('../dist/epml.browser.js')
 // importScripts('../dist/plugins/workers/workers.browser.js')

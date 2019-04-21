@@ -125,7 +125,7 @@ class ProxyTarget extends Target {
             message
         }
 
-        console.log(this._source)
+        // console.log(this._source)
         this._source.proxy.targets.forEach(target => target.sendMessage(message))
     }
 }

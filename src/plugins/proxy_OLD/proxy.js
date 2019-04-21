@@ -84,7 +84,7 @@ function registerProxyTarget (name, target) {
 
 function proxyMessageHandler (data, target) {
     // data.proxyMessageType = ''
-    console.log(data)
+    // console.log(data)
     proxyMessageTypes[data.proxyMessageType](data, target)
 }
 
@@ -106,7 +106,7 @@ function proxyRequestHandler (data, target) {
 
     data.proxyClientID = clientID
 
-    console.log(proxyTarget)
+    // console.log(proxyTarget)
     proxyTarget.targets.forEach(target => target.sendMessage(data))
 }
 

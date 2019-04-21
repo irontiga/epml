@@ -105,7 +105,7 @@ function requestHandler (data, target) {
 }
 
 function createRoute (route, fn) {
-    console.log(`CREATING ROUTTTEEE "${route}"`)
+    // console.log(`CREATING ROUTTTEEE "${route}"`)
     if (!this.routes) this.routes = {}
 
     if (this.routes[route]) return
