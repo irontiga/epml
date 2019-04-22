@@ -342,6 +342,7 @@
             if (Epml.prototype.imReady) throw new Error('Epml.prototype.imReady is already defined')
 
             Epml.prototype.ready = readyPrototype;
+            Epml.prototype.resetReadyCheck = resetCheckReadyPrototype;
             Epml.prototype.imReady = imReadyPrototype;
 
             // Being asked if ready
@@ -379,9 +380,7 @@
             this._pending_ready_checking = true;
             checkReady.call(this, this.targets)
                 .then(() => {
-                    this._ready_plugin.pendingReadyResolves.forEach(resolve => {
-                        resolve();
-                    });
+                    this._ready_plugin.pendingReadyResolves.forEach(resolve => resolve());
                 });
         }
 
@@ -392,6 +391,11 @@
                 this._ready_plugin.pendingReadyResolves.push(resolve);
             }
         })
+    }
+
+    function resetCheckReadyPrototype () {
+        this._ready_plugin = this._ready_plugin || {};
+        this._ready_plugin.isReady = false;
     }
 
     function checkReady (targets) {
