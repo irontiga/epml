@@ -47,7 +47,7 @@ class ContentWindowTarget extends Target {
     constructor (source) {
         super(source)
 
-        if (source.contentWindow) source = source.contentWindow
+        // if (source.contentWindow) source = source.contentWindow // <- Causes issues when cross origin
 
         // If the source already has an existing target object, simply return it.
         if (sourceTargetMap.has(source)) return sourceTargetMap.get(source)
