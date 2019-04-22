@@ -37,7 +37,8 @@ class ContentWindowTarget extends Target {
     static test (source) {
         if (typeof source !== 'object') return false
         // console.log('FOCUS FNS', source.focus === window.focus)
-        return (source === source.window && source.focus === window.focus)
+        // return (source === source.window && source.focus === window.focus) // <- Cause cors is a beach
+        return source.focus === window.focus
     }
 
     isFrom (source) {
