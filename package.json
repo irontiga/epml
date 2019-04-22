@@ -1,6 +1,6 @@
 {
   "name": "epml",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Extensible postMessage library",
   "main": "dist/epml.all.js",
   "module": "src/epml.all.js",
