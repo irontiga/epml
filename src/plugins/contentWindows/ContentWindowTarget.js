@@ -58,12 +58,13 @@ class ContentWindowTarget extends Target {
         this._source = source
 
         // SHOULD MODIFY. Should become source = { contentWindow, origin } rather than source = contentWindow
-        try {
-            this._sourceOrigin = source.origin
-        } catch (e) {
-            // Go away CORS
-            this._sourceOrigin = '*'
-        }
+        // try {
+        //     this._sourceOrigin = source.origin
+        // } catch (e) {
+        //     // Go away CORS
+        //     this._sourceOrigin = '*'
+        // }
+        this._sourceOrigin = '*'
 
         sourceTargetMap.set(source, this)
 
