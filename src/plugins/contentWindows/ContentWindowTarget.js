@@ -35,10 +35,10 @@ class ContentWindowTarget extends Target {
     }
 
     static test (source) {
-        if (typeof source !== 'object') return false
+        // if (typeof source !== 'object') return false
         // console.log('FOCUS FNS', source.focus === window.focus)
         // return (source === source.window && source.focus === window.focus) // <- Cause cors is a beach
-        return source.focus === window.focus
+        return (typeof source !== 'object' && source.focus === window.focus)
     }
 
     isFrom (source) {
@@ -57,7 +57,13 @@ class ContentWindowTarget extends Target {
 
         this._source = source
 
-        this._sourceOrigin = source.origin
+        // SHOULD MODIFY. Should become source = { contentWindow, origin } rather than source = contentWindow
+        try {
+            this._sourceOrigin = source.origin
+        } catch (e) {
+            // Go away CORS
+            this._sourceOrigin = '*'
+        }
 
         sourceTargetMap.set(source, this)
 
