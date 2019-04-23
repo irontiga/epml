@@ -1,0 +1,45 @@
+<!DOPCTYPE html>
+    <html>
+
+    <head>
+
+    </head>
+
+    <body>
+        <h1 id="showCount">0</h1>
+
+        <iframe src="frame1.html" id="frame1"></iframe>
+
+        <script type="module">
+            import Epml from '../../src/Epml_core.js'
+            import onReady from '../onReady.js'
+
+            import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
+            import streamPlugin from '../../src/plugins/streams/stream-plugin.js'
+            Epml.registerPlugin(streamPlugin)
+            Epml.registerPlugin(contentWindowPlugin)
+
+            const showCount = document.getElementById('showCount')
+
+            onReady(() => {
+                const frame1Element = document.getElementById('frame1')
+
+                const frame1Epml = new Epml({ type: 'WINDOW', source: frame1Element.contentWindow })
+
+                frame1Epml.ready().then(() => {
+                    console.log('he\'s ready')
+                    frame1Epml.subscribe('button', (data) => {
+                        console.log('data', data)
+                        showCount.innerHTML = data
+                    })
+                })
+
+                frame1Epml.imReady()
+            })
+
+
+
+        </script>
+    </body>
+
+    </html>

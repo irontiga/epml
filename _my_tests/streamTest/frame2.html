@@ -1,0 +1,37 @@
+<!DOPCTYPE html>
+    <html>
+
+    <head>
+
+    </head>
+
+    <body>
+        <h1>Frame 1 :D</h1>
+
+        <button id="button">Click me</button>
+
+        <script type="module">
+            import Epml from '../../src/Epml_core.js'
+            import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
+            import streamPlugin from '../../src/plugins/streams/stream-plugin.js'
+            import onReady from '../onReady.js'
+            Epml.registerPlugin(contentWindowPlugin)
+            Epml.registerPlugin(streamPlugin)
+
+            const button = document.getElementById('button')
+
+            onReady(() => {
+                
+            })
+
+            const parentEpml = new Epml({ type: 'WINDOW', source: window.parent })
+
+            parentEpml.ready().then(() => {
+                console.log('nice')
+            })
+            
+            parentEpml.imReady()
+        </script>
+    </body>
+
+    </html>

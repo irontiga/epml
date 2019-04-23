@@ -7,12 +7,17 @@
 
 <body>
     <h1>Frame 1</h1>
+
+    <button id="button">Click me</button>
+
     <script type="module">
-        import Epml from '../../src/Epml.js'
-        import proxyPlugin from '../../src/plugins/proxys/proxy.js'
+        import Epml from '../../src/Epml_core.js'
+        import proxyPlugin from '../../src/plugins/proxy/proxy.js'
 
         // Install worker plugin, not default...for now
         import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
+        import streamPlugin from '../../src/plugins/streams/stream-plugin.js'
+        Epml.registerPlugin(streamPlugin)
         Epml.registerPlugin(contentWindowPlugin)
         Epml.registerPlugin(proxyPlugin)
 
@@ -34,6 +39,14 @@
             console.log('In frame1....frame2 is ready :)')
             frame2Epml.request('test').then(res => console.log(`In frame 1: ${res}`))
         })
+
+        const button = document.getElementById('button')
+        let count = 0
+        const buttonStream = frame2Epml.createStream('button', () => count)
+        button.onclick = () => {
+            count++
+            buttonStream.emit(count)
+        }
 
     </script>
 </body>
