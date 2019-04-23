@@ -1,6 +1,7 @@
 # epml
 An Extensible PostMessage Library
 
+Added streamsss
 
 Planned features:
  - Plugin system, allowing Wimp to be split up into the following modules:
