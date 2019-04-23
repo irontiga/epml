@@ -16,8 +16,8 @@
 
         // Install worker plugin, not default...for now
         import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
-        import streamPlugin from '../../src/plugins/streams/stream-plugin.js'
-        Epml.registerPlugin(streamPlugin)
+        import { EpmlStreamPlugin, EpmlStream } from '../../src/plugins/streams/stream-plugin.js'        
+        Epml.registerPlugin(EpmlStreamPlugin)
         Epml.registerPlugin(contentWindowPlugin)
         Epml.registerPlugin(proxyPlugin)
 
@@ -42,7 +42,7 @@
 
         const button = document.getElementById('button')
         let count = 0
-        const buttonStream = frame2Epml.createStream('button', () => count)
+        const buttonStream = new EpmlStream ('button', () => count)
         button.onclick = () => {
             count++
             buttonStream.emit(count)

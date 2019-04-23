@@ -15,12 +15,12 @@
             import onReady from '../onReady.js'
 
             import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
-            import streamPlugin from '../../src/plugins/streams/stream-plugin.js'
-            Epml.registerPlugin(streamPlugin)
+            import { EpmlStreamPlugin } from '../../src/plugins/streams/stream-plugin.js'
+            Epml.registerPlugin(EpmlStreamPlugin)
             Epml.registerPlugin(contentWindowPlugin)
 
             const showCount = document.getElementById('showCount')
-
+            
             onReady(() => {
                 const frame1Element = document.getElementById('frame1')
 

@@ -1,24 +1,20 @@
 import Target from '../../EpmlCore/Target.js'
 
-export const EMIT_STREAM_MESSAGE_TYPE = 'EMIT_STREAM'
+export const STREAM_UPDATE_MESSAGE_TYPE = 'STREAM_UPDATE'
 
 const allStreams = {} // Maybe not even needed
 
-export class Stream {
+export class EpmlStream {
     static get streams () {
         return allStreams
     }
 
-    constructor (name, allowedToJoin, subscriptionFn = () => {}) {
+    constructor (name, subscriptionFn = () => {}) {
         this._name = name // Stream name
         this.targets = [] // Targets listening to the stream
-        this._allowedToJoin = allowedToJoin
         this._subscriptionFn = subscriptionFn // Called on subscription, whatever it returns we send to the new target
+        if (name in allStreams) throw new Error(`Stream with name ${name} already exists!`)
         allStreams[name] = this
-    }
-
-    targetCanJoin (target) {
-        return this._allowedToJoin.indexOf(target) > -1
     }
 
     async subscribe (target) {
@@ -33,7 +29,7 @@ export class Stream {
     _sendMessage (data, target) {
         target.sendMessage({
             data: Target.prepareOutgoingData(data),
-            EpmlMessageType: EMIT_STREAM_MESSAGE_TYPE,
+            EpmlMessageType: STREAM_UPDATE_MESSAGE_TYPE,
             streamName: this._name
         })
     }

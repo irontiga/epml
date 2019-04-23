@@ -14,8 +14,8 @@
 
         // Install worker plugin, not default...for now
         import contentWindowPlugin from '../../src/plugins/contentWindows/contentWindows.js'
-        import streamPlugin from '../../src/plugins/streams/stream-plugin.js'
-        Epml.registerPlugin(streamPlugin)
+        import { EpmlStreamPlugin, EpmlStream } from '../../src/plugins/streams/stream-plugin.js'
+        Epml.registerPlugin(EpmlStreamPlugin)
         Epml.registerPlugin(contentWindowPlugin)
         Epml.registerPlugin(proxyPlugin)
         

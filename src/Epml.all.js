@@ -4,4 +4,4 @@ export { default as ContentWindow } from './plugins/contentWindows/contentWindow
 export { default as RequestPlugin } from './plugins/request/request.js'
 export { default as EpmlProxyPlugin } from './plugins/proxy/proxy.js'
 export { default as EpmlWorkerPlugin } from './plugins/workers/workers.js'
-export { default as StreamPlugin } from './plugins/streams/stream-plugin.js'
+export * from './plugins/streams/stream-plugin.js'
