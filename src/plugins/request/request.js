@@ -1,7 +1,7 @@
 'use strict'
 
 import genUUID from '../../helpers/genUUID.js'
-import Target from '../../EpmlCore/Target.js'
+// import Target from '../../EpmlCore/Target.js'
 
 const REQUEST_MESSAGE_TYPE = 'REQUEST'
 const REQUEST_RESPONSE_MESSAGE_TYPE = 'REQUEST_RESPONSE'
@@ -130,9 +130,9 @@ function createRoute (route, fn) {
                     return err
                 }) // Still send errors you dumb fuck
                 .then((response) => {
-                    console.log(response)
+                    // console.log(response)
                     // response = this.constructor.prepareOutgoingData(response)
-                    const preparedResponse = Target.prepareOutgoingData(response)
+                    // const preparedResponse = Target.prepareOutgoingData(response)
                     target.sendMessage({
                         data: response, // preparedResponse
                         EpmlMessageType: REQUEST_RESPONSE_MESSAGE_TYPE,

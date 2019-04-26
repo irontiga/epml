@@ -16,6 +16,7 @@
             * @param {object} data
             */
         static prepareOutgoingData (data) {
+            // console.log(data)
             return JSON.stringify(data)
         }
 
@@ -110,7 +111,7 @@
             const data = Epml.prepareIncomingData(strData);
             // console.log(target)
             if ('EpmlMessageType' in data) {
-                messageTypes[data.EpmlMessageType](data, target);
+                messageTypes[data.EpmlMessageType](data, target, this); // Reference to Epml
             }
             // Then send a response or whatever back with target.sendMessage(this.constructor.prepareOutgoingData(someData))
         }
@@ -259,11 +260,15 @@
             })
     };
 
-    function requestResponseHandler (data, target) {
+    function requestResponseHandler (data, target, Epml) {
         // console.log("REQUESSTTT", data, pendingRequests)
         // console.log('IN REQUESTHANDLER', pendingRequests, data)
         if (data.requestID in pendingRequests) {
-            pendingRequests[data.requestID](data.data);
+            // console.log(data)
+            // const parsedData = Epml.prepareIncomingData(data.data)
+            const parsedData = data.data;
+            // const parsedData = data.data
+            pendingRequests[data.requestID](parsedData);
         } else {
             console.warn('requestID not found in pendingRequests');
         }
@@ -308,11 +313,16 @@
                 // console.log('ROUTE FN CALLED', data)
                 // User supllied route function. This will turn it into a promise if it isn't one, or it will leave it as one.
                 Promise.resolve(fn(data))
+                    .catch(err => {
+                        if (err instanceof Error) return err.message
+                        return err
+                    }) // Still send errors you dumb fuck
                     .then((response) => {
+                        console.log(response);
                         // response = this.constructor.prepareOutgoingData(response)
-                        response = Target.prepareOutgoingData(response);
+                        const preparedResponse = Target.prepareOutgoingData(response);
                         target.sendMessage({
-                            data: response,
+                            data: response, // preparedResponse
                             EpmlMessageType: REQUEST_RESPONSE_MESSAGE_TYPE,
                             requestOrResponse: 'request',
                             requestID: data.requestID
