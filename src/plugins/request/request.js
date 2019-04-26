@@ -77,7 +77,8 @@ function requestResponseHandler (data, target, Epml) {
     // console.log('IN REQUESTHANDLER', pendingRequests, data)
     if (data.requestID in pendingRequests) {
         // console.log(data)
-        const parsedData = Epml.prepareIncomingData(data.data)
+        // const parsedData = Epml.prepareIncomingData(data.data)
+        const parsedData = data.data
         // const parsedData = data.data
         pendingRequests[data.requestID](parsedData)
     } else {
@@ -124,12 +125,16 @@ function createRoute (route, fn) {
             // console.log('ROUTE FN CALLED', data)
             // User supllied route function. This will turn it into a promise if it isn't one, or it will leave it as one.
             Promise.resolve(fn(data))
-                .catch(err => err) // Still send errors you dumb fuck
+                .catch(err => {
+                    if (err instanceof Error) return err.message
+                    return err
+                }) // Still send errors you dumb fuck
                 .then((response) => {
+                    console.log(response)
                     // response = this.constructor.prepareOutgoingData(response)
-                    response = Target.prepareOutgoingData(response)
+                    const preparedResponse = Target.prepareOutgoingData(response)
                     target.sendMessage({
-                        data: response,
+                        data: response, // preparedResponse
                         EpmlMessageType: REQUEST_RESPONSE_MESSAGE_TYPE,
                         requestOrResponse: 'request',
                         requestID: data.requestID

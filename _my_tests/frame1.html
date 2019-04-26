@@ -22,7 +22,7 @@
                 parentEpml.ready().then(() => {
                     console.log('Parent ready')
                     parentEpml.route('hi', async req => {
-                        if (Math.random() > 0.5) throw { long: 'shlong' }
+                        if (Math.random() > 0.5) throw { long: 'shlong' } // working to throw object, nice :)
                         return (Date.now() - startTime) / 1000
                     })
                 })
