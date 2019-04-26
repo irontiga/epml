@@ -7,7 +7,7 @@
         <h1>Frame 1 :D</h1>
 
         <script type="module">
-            import Epml from '../src/Epml.js'
+            import Epml from '../src/Epml_core.js'
             import contentWindowPlugin from '../src/plugins/contentWindows/contentWindows.js'
             import workerPlugin from '../src/plugins/workers/workers.js'
             import onReady from './onReady.js'
@@ -22,6 +22,7 @@
                 parentEpml.ready().then(() => {
                     console.log('Parent ready')
                     parentEpml.route('hi', async req => {
+                        if (Math.random() > 0.5) throw { long: 'shlong' }
                         return (Date.now() - startTime) / 1000
                     })
                 })

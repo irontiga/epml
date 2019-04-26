@@ -7,7 +7,7 @@
         <iframe src="frame1.html" id="frame1"></iframe>
 
         <script type="module">
-            import Epml from '../src/Epml.js'
+            import Epml from '../src/Epml_core.js'
             import proxyPlugin from '../src/plugins/proxy/proxy.js'
             import onReady from './onReady.js'
 
@@ -21,7 +21,7 @@
                 console.log('dom content loaded index.html')
                 const frame1Element = document.getElementById('frame1')
 
-                const frame1Epml = new Epml({ type: 'WINDOW', source: frame1Element })
+                const frame1Epml = new Epml({ type: 'WINDOW', source: frame1Element.contentWindow })
 
                 // This is going to change to....
                 // const frame1ProxyEpml = new Epml({type: 'PROXY', source: { epmlInstance: frame1Epml, id: 'frame1'}})
@@ -32,7 +32,10 @@
                 frame1Epml.ready().then(() => {
                     console.log('Frame ready :)')
                     setInterval(() => {
-                        frame1Epml.request('hi').then(res => console.log(`Time elapsed: ${res} seconds`))
+                        frame1Epml.request('hi').then(res => {
+                            // const r = JSON.parse(res)
+                            console.log(`Time elapsed: ${JSON.stringify(res)} seconds (${res.long})`)
+                        })
                     }, 3000)
                 })
 

@@ -50,7 +50,10 @@ const joinStream = function (req, target) {
     const name = req.data.name
     // const streamToJoin = targetsToStreamsMap.get(target)[name]
     const streamToJoin = EpmlStream.streams[name]
-    if (!streamToJoin) console.warn(`No stream with name ${name}`, this)
+    if (!streamToJoin) {
+        console.warn(`No stream with name ${name}`, this)
+        return
+    }
 
     streamToJoin.subscribe(target)
 }

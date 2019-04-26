@@ -13,7 +13,10 @@ export class EpmlStream {
         this._name = name // Stream name
         this.targets = [] // Targets listening to the stream
         this._subscriptionFn = subscriptionFn // Called on subscription, whatever it returns we send to the new target
-        if (name in allStreams) throw new Error(`Stream with name ${name} already exists!`)
+        if (name in allStreams) {
+            console.warn(`Stream with name ${name} already exists! Returning it instead`)
+            return allStreams[name]
+        }
         allStreams[name] = this
     }
 

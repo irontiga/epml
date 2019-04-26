@@ -13,6 +13,7 @@ export default class Target {
         * @param {object} data
         */
     static prepareOutgoingData (data) {
+        // console.log(data)
         return JSON.stringify(data)
     }
 

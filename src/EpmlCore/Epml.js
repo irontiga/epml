@@ -87,7 +87,7 @@ export default class Epml {
         const data = Epml.prepareIncomingData(strData)
         // console.log(target)
         if ('EpmlMessageType' in data) {
-            messageTypes[data.EpmlMessageType](data, target)
+            messageTypes[data.EpmlMessageType](data, target, this) // Reference to Epml
         }
         // Then send a response or whatever back with target.sendMessage(this.constructor.prepareOutgoingData(someData))
     }

@@ -72,11 +72,14 @@ const requestFn = function (requestType, data, timeout) {
         })
 }
 
-function requestResponseHandler (data, target) {
+function requestResponseHandler (data, target, Epml) {
     // console.log("REQUESSTTT", data, pendingRequests)
     // console.log('IN REQUESTHANDLER', pendingRequests, data)
     if (data.requestID in pendingRequests) {
-        pendingRequests[data.requestID](data.data)
+        // console.log(data)
+        const parsedData = Epml.prepareIncomingData(data.data)
+        // const parsedData = data.data
+        pendingRequests[data.requestID](parsedData)
     } else {
         console.warn('requestID not found in pendingRequests')
     }
@@ -121,6 +124,7 @@ function createRoute (route, fn) {
             // console.log('ROUTE FN CALLED', data)
             // User supllied route function. This will turn it into a promise if it isn't one, or it will leave it as one.
             Promise.resolve(fn(data))
+                .catch(err => err) // Still send errors you dumb fuck
                 .then((response) => {
                     // response = this.constructor.prepareOutgoingData(response)
                     response = Target.prepareOutgoingData(response)

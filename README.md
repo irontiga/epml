@@ -3,6 +3,16 @@ An Extensible PostMessage Library
 
 Added streamsss
 
+NEED TO MAKE NAMING MORE CONSISTENT PLEASE AND THANK YOU
+... what was that meant to mean? ^^^
+Add unsubscribe method to streams...i.e.
+```
+const parentEpml = new Epml({type: 'WINDOW', source: window.parent }) 
+const addressSubscription = parentEpml.subscribe('address', () => {...})
+...
+addressSubscription.unsubscribe()
+```
+
 Planned features:
  - Plugin system, allowing Wimp to be split up into the following modules:
    - **wimp-core** - Duh. Doesn't do much on it's own. Has the basic request features built in...or should that be a seperate plugin

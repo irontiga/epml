@@ -53,6 +53,11 @@ function proxyMessageHandler (data, target) {
         // targets.targets[0].sendMessage(data)
     } else if (data.state === 'DELIVERY') {
         // This target is a target created through type: proxy
+        const targetInstance = proxySources.getByKey(data.target)
+        if (!targetInstance) {
+            console.warn(`Target ${data.target} not registered.`)
+            return
+        }
         const target = proxySources.getByKey(data.target)
         // console.log(target)
         // console.log(proxySources)
