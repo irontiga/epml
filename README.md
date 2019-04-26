@@ -13,6 +13,8 @@ const addressSubscription = parentEpml.subscribe('address', () => {...})
 addressSubscription.unsubscribe()
 ```
 
+Add `Epml.logging` option...options for `verbose` or `off`, default to `off` or `false` I guess
+
 Planned features:
  - Plugin system, allowing Wimp to be split up into the following modules:
    - **wimp-core** - Duh. Doesn't do much on it's own. Has the basic request features built in...or should that be a seperate plugin
